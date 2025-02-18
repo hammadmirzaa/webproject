@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import { PostFormProvider } from './store/postContext';
+import { AuthProvider } from './store/authContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -10,6 +11,7 @@ root.render(
   <PostFormProvider>
     <App />
     </PostFormProvider>
+    
   </React.StrictMode>
 );
 

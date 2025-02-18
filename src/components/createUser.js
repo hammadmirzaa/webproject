@@ -1,39 +1,37 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { UsePostFormContext } from "../store/postContext";
 
 const CreateUser = () => {
-  const { formData, setFormData, postFormData, fetchData, tableData, editFormData, updateFormData } =
-    UsePostFormContext();
-
-  useEffect(() => {
-    fetchData();
-  }, []);
+  const { formData, setFormData, postFormData } = UsePostFormContext();
+  const [imagePreview, setImagePreview] = useState(null);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    const { name, value, type, files } = e.target;
+
+    if (type === "file") {
+      const file = files[0];
+      setFormData({ ...formData, [name]: file });
+
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      if (file) {
+        reader.readAsDataURL(file);
+      }
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (formData.id) {
-      editFormData(formData);  
-    } else {
-      // If no ID, we are creating a new user
-      postFormData();
-    }
-  };
-
-
-  const handleEdit = (item) => {
-    // Set the form data with the item to edit
-    setFormData(item);
+    postFormData();
   };
 
   return (
     <div className="max-w-md mx-auto mt-10 p-6 border border-gray-300 rounded-lg shadow-md">
-      <h2 className="text-2xl font-bold mb-4">{formData.id ? "Edit" : "Create"} User</h2>
+      <h2 className="text-2xl font-bold mb-4">Create User</h2>
       <form onSubmit={handleSubmit}>
         <label className="block font-medium mb-1" htmlFor="name">
           Name:
@@ -48,56 +46,61 @@ const CreateUser = () => {
           className="w-full p-2 mb-4 border border-gray-300 rounded"
         />
 
-        <label className="block font-medium mb-1" htmlFor="email">
-          Email:
+        <label className="block font-medium mb-1" htmlFor="description">
+          Description:
         </label>
         <input
-          type="email"
-          id="email"
-          name="email"
-          value={formData.email}
+        type="text"
+        id="description"
+        name="description"
+        value={formData.description || ""}
+        onChange={handleChange}
+        required
+        className="w-full p-2 mb-4 border border-gray-300 rounded"
+      />
+
+        <label className="block font-medium mb-1" htmlFor="price">
+          Price:
+        </label>
+        <input
+          type="number"
+          id="price"
+          name="price"
+          value={formData.price || ""}
           onChange={handleChange}
           required
           className="w-full p-2 mb-4 border border-gray-300 rounded"
         />
 
-        <label className="block font-medium mb-1" htmlFor="mobile">
-          Mobile:
+        <label className="block font-medium mb-1" htmlFor="image">
+          Image:
         </label>
         <input
-          type="text"
-          id="mobile"
-          name="mobile"
-          value={formData.mobile}
+          type="file"
+          id="image"
+          name="image"
           onChange={handleChange}
-          required
           className="w-full p-2 mb-4 border border-gray-300 rounded"
         />
+
+        {imagePreview && (
+          <div className="my-4">
+            <h4>Image Preview:</h4>
+            <img
+              src={imagePreview}
+              alt="Preview"
+              className="w-32 h-32 object-cover"
+            />
+          </div>
+        )}
 
         <button
           type="submit"
           className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
         >
-          {formData.id ? "Update" : "Submit"}
+          Submit
         </button>
       </form>
-
-      <div>
-        {tableData.map((item) => (
-          <div key={item.id} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            <h4>{item.name}</h4>
-            <h4>{item.email}</h4>
-            <h4>{item.mobile}</h4>
-            <button
-              className="w-full bg-yellow-500 text-white p-2 rounded hover:bg-yellow-600"
-              type="button"
-              onClick={() => handleEdit(item)} // Pre-fill form with the item data for editing
-            >
-              Edit
-            </button>
-          </div>
-        ))}
-      </div>
     </div>
   );
 };

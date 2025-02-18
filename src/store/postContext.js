@@ -6,8 +6,9 @@ export const UsePostFormContext = () => useContext(PostFormContext);
 export const PostFormProvider = ({ children }) => {
   const [formData, setFormData] = useState({
     name: "",
-    email: "",
-    mobile: "",
+    description: "",
+    price: "",
+    image:""
   });
   const [tableData, setTableData] = useState([]) 
   const postFormData = async () => {
@@ -19,8 +20,9 @@ export const PostFormProvider = ({ children }) => {
         },
         body: new URLSearchParams({
           name: formData.name,
-          email: formData.email,
-          mobile: formData.mobile,
+          description: formData.description,
+          price: formData.price,
+          image: formData.image,
         }).toString(),
       });
 
@@ -62,8 +64,9 @@ export const PostFormProvider = ({ children }) => {
         },
         body: new URLSearchParams({
           name: formData.name,
-          email: formData.email,
-          mobile: formData.mobile,
+          description: formData.description,
+          price: formData.price,
+          imageji: formData.image,
         }).toString(),
       }
     );
@@ -71,7 +74,6 @@ export const PostFormProvider = ({ children }) => {
     const result = await response.json();
     if (result.status === "success") {
       alert("Data updated successfully");
-      // Optionally update the table or trigger a refresh to show the updated data
     } else {
       alert("Failed to update data: " + result.message);
     }
