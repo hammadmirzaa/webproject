@@ -5,7 +5,7 @@ import CreateUser from "./components/createUser";
 import EditUser from "./components/editUser";
 import LoginForm from "./components/loginForm";
 import RegisterForm from "./components/registerForm";
-import { AuthProvider } from "./store/authContext";
+import { AuthProvider, UseAuthContext } from "./store/authContext";
 import ProtectedRoute from "./store/protectedRoute";
 
 function App() {
@@ -13,23 +13,23 @@ function App() {
     <div className="App">
       Hello React
       <BrowserRouter>
+      <AuthProvider>
         <nav>
           <ul>
             <li>
               <Link to="/listItems">List Users</Link>
             </li>
             <li>
-              <Link to="/">Login</Link>
+              <Link to="/"> Login </Link>
             </li>
             <li>
               <Link to="/register">Register</Link>
             </li>
             <li>
-              <Link to="user/create">Create User</Link>
+              <Link to="user/create">Admin Portal</Link>
             </li>
           </ul>
         </nav>
-        <AuthProvider>
         <Routes>
         <Route path="/" element={<LoginForm />} />
         <Route path="/register" element={<RegisterForm />} />

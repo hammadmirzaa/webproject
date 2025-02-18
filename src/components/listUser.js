@@ -3,6 +3,7 @@ import { UsePostFormContext } from '../store/postContext';
 
 const ListUser = () => {
     const { tableData, setFormData, fetchData  } = UsePostFormContext();
+    console.log(tableData)
     useEffect(()=>{
       fetchData()
     },[])
