@@ -1,27 +1,29 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UseAuthContext } from "../store/authContext";
+import { UsePostFormContext } from "../store/postContext";
 
 const LoginForm = () => {
-  const {formData, setFormData, login} = UseAuthContext()
+  const { formData, setFormData, login } = UseAuthContext();
+  const {setIsLogout} = UsePostFormContext()
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
+  useEffect(() => {
+    setIsLogout(false);
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-   login()
-
+    login();
   };
 
   return (
     <div>
-      <h2 >Login Form</h2>
+      <h2>Login Form</h2>
       <form onSubmit={handleSubmit}>
-        <label  htmlFor="username">
-          Username or Email
-        </label>
+        <label htmlFor="username">Username or Email</label>
         <input
           type="text"
           id="username"
@@ -31,9 +33,7 @@ const LoginForm = () => {
           required
         />
 
-        <label htmlFor="password">
-          Password:
-        </label>
+        <label htmlFor="password">Password:</label>
         <input
           type="password"
           id="password"
@@ -43,11 +43,7 @@ const LoginForm = () => {
           required
         />
 
-        <button
-          type="submit"
-        >
-          Login
-        </button>
+        <button type="submit">Login</button>
       </form>
     </div>
   );

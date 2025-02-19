@@ -10,6 +10,7 @@ export const PostFormProvider = ({ children }) => {
     price: "",
     image:""
   });
+  const [isLogout, setIsLogout] = useState(false)
   const [tableData, setTableData] = useState([]) 
   const postFormData = async () => {
     try {
@@ -56,7 +57,7 @@ export const PostFormProvider = ({ children }) => {
   const editFormData = async (id, updatedData) => {
   try {
     const response = await fetch(
-      `http://localhost/web_project/update.php?id=${id}&name=${updatedData.name}&email=${updatedData.email}&mobile=${updatedData.mobile}`,
+      `http://localhost/web_project/update.php`,
       {
         method: "PUT",
         headers: {
@@ -85,7 +86,7 @@ export const PostFormProvider = ({ children }) => {
 
   return (
     <PostFormContext.Provider
-      value={{ formData, setFormData, postFormData, editFormData, fetchData, tableData, setTableData }}
+      value={{ formData, setFormData, postFormData, editFormData, fetchData, tableData, setTableData, isLogout, setIsLogout }}
     >
       {children}
     </PostFormContext.Provider>

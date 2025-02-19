@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { UsePostFormContext } from "../store/postContext";
+import ListUser from "./listUser";
+import Example from "./editUser";
 
 const CreateUser = () => {
-  const { formData, setFormData, postFormData } = UsePostFormContext();
+  const { formData, setFormData, postFormData, setIsLogout, isLogout } = UsePostFormContext();
   const [imagePreview, setImagePreview] = useState(null);
 
   const handleChange = (e) => {
@@ -23,6 +25,10 @@ const CreateUser = () => {
       setFormData({ ...formData, [name]: value });
     }
   };
+
+  useEffect(()=>{
+    setIsLogout(!isLogout)
+  },[])
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -101,6 +107,8 @@ const CreateUser = () => {
           Submit
         </button>
       </form>
+      <Example/>
+      <ListUser admin />
     </div>
   );
 };

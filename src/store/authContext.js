@@ -1,10 +1,12 @@
 import { createContext, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { UsePostFormContext } from "./postContext";
 
 const AuthContext = createContext();
 export const UseAuthContext = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
+  const {isLogout,setIsLogout} = UsePostFormContext()
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -44,7 +46,8 @@ export const AuthProvider = ({ children }) => {
 
       const result = await response.json();
       if (result.status === "success") {
-        setIsAuthenticated(true);   
+        setIsAuthenticated(true); 
+        setIsLogout(true)  
         navigate("/listItems");
       }
       alert(result.message);

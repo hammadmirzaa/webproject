@@ -7,45 +7,49 @@ import LoginForm from "./components/loginForm";
 import RegisterForm from "./components/registerForm";
 import { AuthProvider, UseAuthContext } from "./store/authContext";
 import ProtectedRoute from "./store/protectedRoute";
-
+import { UsePostFormContext } from "./store/postContext";
+import 'bootstrap/dist/css/bootstrap.min.css';
 function App() {
+  const { isLogout, setIsLogout } = UsePostFormContext();
   return (
     <div className="App">
-      Hello React
       <BrowserRouter>
-      <AuthProvider>
-        <nav>
+        <AuthProvider>
+        {isLogout &&
+          <nav>
           <ul>
-            <li>
-              <Link to="/listItems">List Users</Link>
-            </li>
-            <li>
-              <Link to="/"> Login </Link>
-            </li>
-            <li>
-              <Link to="/register">Register</Link>
-            </li>
+            {isLogout ? (
+              <li>
+                <Link to="/" > Logout </Link>
+              </li>
+            ) : (
+              <li>
+                <Link to="/"> Login </Link>
+              </li>
+            )}
             <li>
               <Link to="user/create">Admin Portal</Link>
             </li>
           </ul>
         </nav>
-        <Routes>
-        <Route path="/" element={<LoginForm />} />
-        <Route path="/register" element={<RegisterForm />} />
-        <Route
-          path="/listItems"
-          element={<ProtectedRoute element={<ListUser />} />}
-        />
-        <Route
-          path="user/create"
-          element={<ProtectedRoute element={<CreateUser />} />}
-        />
-        <Route
-          path="user/:id/edit"
-          element={<ProtectedRoute element={<EditUser />} />}
-        />
-      </Routes>
+         }
+
+          <Routes>
+            <Route path="/" element={<LoginForm />} />
+            <Route path="/register" element={<RegisterForm />} />
+            <Route
+              path="/listItems"
+              element={<ProtectedRoute element={<ListUser />} />}
+            />
+            <Route
+              path="user/create"
+              element={<ProtectedRoute element={<CreateUser />} />}
+            />
+            <Route
+              path="user/:id/edit"
+              element={<ProtectedRoute element={<EditUser />} />}
+            />
+          </Routes>
         </AuthProvider>
       </BrowserRouter>
     </div>
